@@ -17,6 +17,6 @@ const getAControlaler = (req: Request, res: Response) => {
 };
 
 app.get('/', getAControlaler);
-console.log(process.cwd());
+// console.log(process.cwd());
 
 export default app;
