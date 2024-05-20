@@ -15,7 +15,7 @@ const creatStudent = async (req: Request, res: Response) => {
     // const { error, value } = studentValidationSchema.validate(studentData);
     // --------
     // const result = await StudentService.createStudentIntoDB(studentData);
-    const result = await StudentService.createStudentIntoDB(zodparsData);
+    const result = await StudentService.createStudentIntoDB(studentData);
 
     // console.log({ error }, { value });
     // if (error) {
@@ -32,10 +32,10 @@ const creatStudent = async (req: Request, res: Response) => {
       message: 'Student is created succesfully',
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: 'somthing is wrong',
+      message: error.message || 'somthing is wrong',
       error: error,
     });
   }
@@ -49,8 +49,12 @@ const getAAllStudent = async (req: Request, res: Response) => {
       message: 'Student is retrieve succesfully',
       data: result,
     });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'somthing is wrong',
+      error: error,
+    });
   }
 };
 const getaSingleStudent = async (req: Request, res: Response) => {
@@ -62,8 +66,30 @@ const getaSingleStudent = async (req: Request, res: Response) => {
       message: 'Student is retrieve succesfully',
       data: result,
     });
-  } catch (err) {
-    console.log(err);
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'somthing is wrong',
+      error: error,
+    });
+  }
+};
+
+const deleteStudent = async (req: Request, res: Response) => {
+  try {
+    const { studenId } = req.params;
+    const result = await StudentService.deleteStudenFromDB(studenId);
+    res.status(200).json({
+      success: true,
+      message: 'Student is delete succesfully succesfully',
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message || 'somthing is wrong',
+      error: error,
+    });
   }
 };
 
@@ -71,4 +97,5 @@ export const studentControllers = {
   creatStudent,
   getAAllStudent,
   getaSingleStudent,
+  deleteStudent,
 };
