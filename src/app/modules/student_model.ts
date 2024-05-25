@@ -17,13 +17,6 @@ const userNameSchema = new Schema<TUserName>({
     trim: true,
     required: [true, 'First name is missing, please add it.'],
     maxlength: [20, 'max allowd lenth  is 10'],
-    // validate: {
-    //   validator: function (value: string) {
-    //     const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
-    //     return firstNameStr === value;
-    //   },
-    //   message: '{VALUE} is not in capitalize format }',
-    // },
   },
   middleName: {
     type: String,
@@ -103,6 +96,14 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, 'Student ID is missing, please add it.'],
       unique: true,
     },
+
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, ' user id is required'],
+      unique: true,
+      ref: 'User',
+    },
+
     password: {
       type: String,
       required: [true, 'Student password is missing, please add it.'],
@@ -159,7 +160,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, 'Local guardian information is missing, please add it.'],
     },
     profileImage: { type: String },
-    isActive: { type: String, enum: ['active', 'blocked'], default: 'active' },
+
     isDeleted: {
       type: Boolean,
       default: false,
