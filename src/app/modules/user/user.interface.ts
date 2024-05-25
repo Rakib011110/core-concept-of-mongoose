@@ -1,10 +1,10 @@
 import { string } from 'zod';
 
 export type TUser = {
-  _id: string;
+  id: string;
   password: string;
   needsPasswordChange: boolean;
   role: 'admin' | 'student' | 'faculty';
-  stutus: 'in-progress' | 'blocked';
+  status: 'in-progress' | 'blocked';
   isDeleted: boolean;
 };
