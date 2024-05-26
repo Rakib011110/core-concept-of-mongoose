@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import validator from 'validator';
-import bcrypt from 'bcrypt';
+
 import {
   TGuardian,
   TStudent,
@@ -104,11 +104,11 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       ref: 'User',
     },
 
-    password: {
-      type: String,
-      required: [true, 'Student password is missing, please add it.'],
-      maxlength: [20, 'password can not be more the 20 character'],
-    },
+    // password: {
+    //   type: String,
+    //   required: [true, 'Student password is missing, please add it.'],
+    //   maxlength: [20, 'password can not be more the 20 character'],
+    // },
     name: {
       type: userNameSchema,
       required: [true, 'Name is missing, please add it.'],
@@ -176,26 +176,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 // virtual
 studentSchema.virtual('fullName').get(function () {
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
-});
-
-// pre save middle aware hooks
-
-studentSchema.pre('save', async function (next) {
-  // console.log((this, 'pre hook: we will save  data'));
-
-  const user = this; // doc
-  //  hashing password and save in to db
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_round),
-  );
-  next();
-});
-
-// post save middleware /hook
-studentSchema.post('save', function (doc, next) {
-  doc.password = '';
-  next();
 });
 
 studentSchema.pre('find', function (next) {

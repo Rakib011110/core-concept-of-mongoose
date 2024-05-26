@@ -1,10 +1,14 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { StudentService } from './student.service';
 // import Joi from 'joi';
 // import { studentValidationSchema } from './student.validation';
 import { z } from 'zod';
 
-const getAAllStudent = async (req: Request, res: Response) => {
+const getAAllStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const result = await StudentService.getAllStudentFromDB();
     res.status(200).json({
@@ -12,15 +16,15 @@ const getAAllStudent = async (req: Request, res: Response) => {
       message: 'Student is retrieve succesfully',
       data: result,
     });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || 'somthing is wrong',
-      error: error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
-const getaSingleStudent = async (req: Request, res: Response) => {
+const getaSingleStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studenId } = req.params;
     const result = await StudentService.getSingleStudenFromDB(studenId);
@@ -29,16 +33,16 @@ const getaSingleStudent = async (req: Request, res: Response) => {
       message: 'Student is retrieve succesfully',
       data: result,
     });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || 'somthing is wrong',
-      error: error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
-const deleteStudent = async (req: Request, res: Response) => {
+const deleteStudent = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const { studenId } = req.params;
     const result = await StudentService.deleteStudenFromDB(studenId);
@@ -47,12 +51,8 @@ const deleteStudent = async (req: Request, res: Response) => {
       message: 'Student is delete succesfully succesfully',
       data: result,
     });
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || 'somthing is wrong',
-      error: error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
