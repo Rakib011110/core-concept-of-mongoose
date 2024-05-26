@@ -3,6 +3,8 @@ import { StudentService } from './student.service';
 // import Joi from 'joi';
 // import { studentValidationSchema } from './student.validation';
 import { z } from 'zod';
+import httpStatus from 'http-status';
+import sendResponse from '../../utils/sendRespon';
 
 const getAAllStudent = async (
   req: Request,
@@ -11,9 +13,10 @@ const getAAllStudent = async (
 ) => {
   try {
     const result = await StudentService.getAllStudentFromDB();
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
-      message: 'Student is retrieve succesfully',
+      message: 'student is retrieved succesfully',
       data: result,
     });
   } catch (error) {
@@ -28,9 +31,10 @@ const getaSingleStudent = async (
   try {
     const { studenId } = req.params;
     const result = await StudentService.getSingleStudenFromDB(studenId);
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
-      message: 'Student is retrieve succesfully',
+      message: 'student is retrieved succesfully',
       data: result,
     });
   } catch (error) {
@@ -46,9 +50,10 @@ const deleteStudent = async (
   try {
     const { studenId } = req.params;
     const result = await StudentService.deleteStudenFromDB(studenId);
-    res.status(200).json({
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
       success: true,
-      message: 'Student is delete succesfully succesfully',
+      message: 'student is retrieved succesfully',
       data: result,
     });
   } catch (error) {
