@@ -13,12 +13,12 @@ app.use(cors());
 // app.use('/api/v1/students', StudentRoutes);
 app.use('/api/v1', router);
 
-const getAControlaler = (req: Request, res: Response) => {
+const getTest = (req: Request, res: Response) => {
   const a = 20;
   res.send(a);
 };
 
-app.get('/', getAControlaler);
+app.get('/', getTest);
 
 app.use(globalErrorHandler);
 app.use(notFoundError);
