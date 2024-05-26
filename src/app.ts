@@ -3,6 +3,7 @@ import cors from 'cors';
 import { StudentRoutes } from './app/modules/students/student.router';
 import { UserRoutes } from './app/modules/user/user.route';
 import globalErrorHandler from './app/middleware/globalErrorHandler';
+import notFoundError from './app/middleware/notfoundErrror';
 const app: Application = express();
 
 //parsers
@@ -23,5 +24,6 @@ app.get('/', getAControlaler);
 // console.log(process.cwd());
 
 app.use(globalErrorHandler);
+app.use(notFoundError);
 
 export default app;
