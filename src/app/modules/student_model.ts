@@ -121,7 +121,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       },
       required: [true, 'Gender is missing, please add it.'],
     },
-    dateOFBirth: { type: String },
+    dateOFBirth: { type: Date },
     email: {
       type: String,
       required: [true, 'Email is missing, please add it.'],
@@ -160,6 +160,8 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, 'Local guardian information is missing, please add it.'],
     },
     profileImage: { type: String },
+
+    admissionSemester: { type: Schema.ObjectId, ref: 'AcademicSemester' },
 
     isDeleted: {
       type: Boolean,

@@ -1,12 +1,16 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { userControllers } from './user.controller';
+import { AnyZodObject } from 'zod';
+
+import { studentValidations } from '../students/student.validation';
+import validationRequest from '../../middleware/validateRequest';
 
 const router = express.Router();
 
-const shenabahini = (req: Request, res: Response, next: NextFunction) => {
-  console.log('you can call me army');
-};
-
-router.post('/create-student', shenabahini, userControllers.createStudent);
+router.post(
+  '/create-student',
+  validationRequest(studentValidations.createStudentValidationSchema),
+  userControllers.createStudent,
+);
 
 export const UserRoutes = router;
