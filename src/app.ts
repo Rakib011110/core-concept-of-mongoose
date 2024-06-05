@@ -13,7 +13,9 @@ app.use(cors());
 // app.use('/api/v1/students', StudentRoutes);
 app.use('/api/v1', router);
 
-const getTest = (req: Request, res: Response) => {
+const getTest = async (req: Request, res: Response) => {
+  // Promise.reject();
+
   const a = 20;
   res.send(a);
 };

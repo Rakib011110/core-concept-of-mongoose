@@ -5,8 +5,34 @@ import { AppError } from '../../Errors/AppError';
 import { User } from '../user/user.model';
 import httpStatus from 'http-status';
 
-const getAllStudentFromDB = async () => {
-  const result = await Student.find()
+const getAllStudentFromDB = async (query: Record<string, unknown>) => {
+  // const queryObj = { ...query }; // copying req.query object so that we can mutate the copy object
+  // console.log('base query', query);
+
+  const queryObject = { ...query }; // copy
+
+  const studentSearchableFields = ['email', 'name.firstName', 'presentAddress'];
+  let searchTerm = ''; // SET DEFAULT VALUE
+
+  // IF searchTerm  IS GIVEN SET IT
+  if (query?.searchTerm) {
+    searchTerm = query?.searchTerm as string;
+  }
+
+  const searchQuery = Student.find({
+    $or: studentSearchableFields.map((field) => ({
+      [field]: { $regex: searchTerm, $options: 'i' },
+    })),
+  });
+
+  // filtereing
+  const excludeFields = ['searchTerm', 'sort', 'limit'];
+
+  excludeFields.forEach((el) => delete queryObject[el]);
+  console.log({ query, queryObject });
+
+  const filterQuery = searchQuery
+    .find(queryObject)
     .populate('admissionSemester')
     .populate('academicDepartment')
     .populate({
@@ -15,7 +41,22 @@ const getAllStudentFromDB = async () => {
         path: 'academicFaculty',
       },
     });
-  return result;
+
+  // SORTING FUNCTIONALITY:
+  let sort = '-createdAt'; // SET DEFAULT VALUE
+  // IF sort  IS GIVEN SET IT
+  if (query.sort) {
+    sort = query.sort as string;
+  }
+  const sortQuery = filterQuery.sort(sort);
+
+  let limit = 1;
+  if (query.limit) {
+    limit = Number(query.limit);
+  }
+  const limitQuery = await sortQuery.limit(limit);
+
+  return limitQuery;
 };
 
 const getSingleStudenFromDB = async (id: string) => {

@@ -11,8 +11,9 @@ import { AppError } from '../Errors/AppError';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   // setting default values
-  let statusCode = error.stutusCode || 500;
-  let message = error.message || 'somthing is wrong';
+  let statusCode = 500;
+  // let message = error.message || 'somthing is wrong';
+  let message = 'somthing is wrong';
 
   let errorSources: TErrorSources = [
     {
@@ -45,6 +46,14 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     errorSources = simplifiedError?.errorSources;
   } else if (error instanceof AppError) {
     statusCode = error?.stutusCode;
+    message = error?.message;
+    errorSources = [
+      {
+        path: '',
+        message: error?.message,
+      },
+    ];
+  } else if (error instanceof Error) {
     message = error?.message;
     errorSources = [
       {
