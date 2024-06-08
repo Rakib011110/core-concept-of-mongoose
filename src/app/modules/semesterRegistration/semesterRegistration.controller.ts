@@ -14,7 +14,7 @@ const createSemesterRegistration = catchAsynce(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Admin is created succesfully',
+      message: ' semester registration  is succesfull',
       data: result,
     });
   },
@@ -22,42 +22,49 @@ const createSemesterRegistration = catchAsynce(
 
 const getAllSemesterRegistrations = catchAsynce(
   async (req: Request, res: Response) => {
-    const rustul = '';
+    const result =
+      await SemesterRegistrationService.getAllSemesterRegistrationsFromDB(
+        req.query,
+      );
 
-    //   sendResponse(res, {
-    //     statusCode: httpStatus.OK,
-    //     success: true,
-    //     message: 'Admin is created succesfully',
-    //     data: result,
-    //   });
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: ' Semestere Registration retrive succesfully',
+      data: result,
+    });
   },
 );
 const getSingleSemesterRegistration = catchAsynce(
   async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const rustul = '';
+    const result =
+      await SemesterRegistrationService.getSingleSemesterRegistrationsFromDB(
+        id,
+      );
 
-    //   sendResponse(res, {
-    //     statusCode: httpStatus.OK,
-    //     success: true,
-    //     message: 'Admin is created succesfully',
-    //     data: result,
-    //   });
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Semester Registration Retrive Successfully succesfully',
+      data: result,
+    });
   },
 );
 const updateSemesterRegistration = catchAsynce(
   async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const rustul = '';
+    const result =
+      await SemesterRegistrationService.updateSemesterRegistrationIntoDB(id);
 
-    //   sendResponse(res, {
-    //     statusCode: httpStatus.OK,
-    //     success: true,
-    //     message: 'Admin is created succesfully',
-    //     data: result,
-    //   });
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Admin is created succesfully',
+      data: result,
+    });
   },
 );
 const deleteSemesterRegistration = catchAsynce(
