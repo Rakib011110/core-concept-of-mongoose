@@ -57,12 +57,15 @@ const updateSemesterRegistration = catchAsynce(
     const { id } = req.params;
 
     const result =
-      await SemesterRegistrationService.updateSemesterRegistrationIntoDB(id);
+      await SemesterRegistrationService.updateSemesterRegistrationIntoDB(
+        id,
+        req.body,
+      );
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Admin is created succesfully',
+      message: 'Semester Registration update succesfully',
       data: result,
     });
   },
