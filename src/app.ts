@@ -4,10 +4,13 @@ import globalErrorHandler from './app/middleware/globalErrorHandler';
 import notFoundError from './app/middleware/notfoundErrror';
 import router from './routes';
 const app: Application = express();
+import cookieParser from 'cookie-parser';
 
 //parsers
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+
+app.use(cors({ origin: ['http://localhost:5173'] }));
 
 //  application routes
 // app.use('/api/v1/students', StudentRoutes);

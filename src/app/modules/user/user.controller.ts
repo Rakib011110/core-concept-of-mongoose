@@ -1,26 +1,25 @@
-import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { UserService } from './user.service';
-import { UserValidation } from './user.validation';
-import sendResponse from '../../utils/sendRespon';
 import httpStatus from 'http-status';
-import catchAsynce from '../../utils/catchAsynce';
+import { UserServices } from './user.service';
+import catchAsync from '../../utils/catchAsynce';
+import sendResponse from '../../utils/sendRespon';
 
-const createStudent = catchAsynce(async (req, res, next) => {
+const createStudent = catchAsync(async (req, res) => {
   const { password, student: studentData } = req.body;
-  //   const zodparsData = UserValidation.parse(studentData);
-  const result = await UserService.createStudentIntoDB(password, studentData);
+
+  const result = await UserServices.createStudentIntoDB(password, studentData);
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'student is created succesfully',
+    message: 'Student is created succesfully',
     data: result,
   });
 });
 
-const createFaculty = catchAsynce(async (req, res) => {
+const createFaculty = catchAsync(async (req, res) => {
   const { password, faculty: facultyData } = req.body;
 
-  const result = await UserService.createFacultyIntoDB(password, facultyData);
+  const result = await UserServices.createFacultyIntoDB(password, facultyData);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -30,10 +29,10 @@ const createFaculty = catchAsynce(async (req, res) => {
   });
 });
 
-const createAdmin = catchAsynce(async (req, res) => {
+const createAdmin = catchAsync(async (req, res) => {
   const { password, admin: adminData } = req.body;
 
-  const result = await UserService.createAdminIntoDB(password, adminData);
+  const result = await UserServices.createAdminIntoDB(password, adminData);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -43,7 +42,7 @@ const createAdmin = catchAsynce(async (req, res) => {
   });
 });
 
-export const userControllers = {
+export const UserControllers = {
   createStudent,
   createFaculty,
   createAdmin,

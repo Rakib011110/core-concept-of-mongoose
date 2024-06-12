@@ -3,34 +3,53 @@ import config from '../../config';
 import catchAsynce from '../../utils/catchAsynce';
 import sendResponse from '../../utils/sendRespon';
 import { AuthServices } from './auth.service';
+import { JwtPayload } from 'jsonwebtoken';
+import catchAsync from '../../utils/catchAsynce';
 
 const loginUser = catchAsynce(async (req, res) => {
   const result = await AuthServices.loginUser(req.body);
 
+  const { refreshToken, accessToken, needsPasswordChange } = result;
+
+  res.cookie('refreshToken', refreshToken, {
+    secure: config.NODE_ENV === 'production',
+    httpOnly: true,
+  });
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User is logged in succesfully!',
-    data: result,
+    data: {
+      accessToken,
+      needsPasswordChange,
+    },
   });
 });
 
-const changePassword = catchAsynce(async (req, res) => {
-  //   sendResponse(res, {
-  //     statusCode: httpStatus.OK,
-  //     success: true,
-  //     message: 'Password is updated succesfully!',
-  //     data: result,
-  //   });
-});
+const changePassword = catchAsync(async (req, res) => {
+  const { ...passwordData } = req.body;
 
-const refreshToken = catchAsynce(async (req, res) => {
-  //   sendResponse(res, {
-  //     statusCode: httpStatus.OK,
-  //     success: true,
-  //     message: 'Access token is retrieved succesfully!',
-  //     data: result,
-  //   });
+  const result = await AuthServices.changePassword(
+    req.user as JwtPayload,
+    passwordData,
+  );
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Password is updated succesfully!',
+    data: result,
+  });
+});
+const refreshToken = catchAsync(async (req, res) => {
+  const { refreshToken } = req.cookies;
+  const result = await AuthServices.refreshToken(refreshToken);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Access token is retrieved succesfully!',
+    data: result,
+  });
 });
 
 export const AuthControllers = {

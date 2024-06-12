@@ -4,6 +4,8 @@ import sendResponse from '../../utils/sendRespon';
 import { FacultyServices } from './faculty.service';
 
 const getSingleFaculty = catchAsynce(async (req, res) => {
+  // console.log('User data in createFaculty:', req.user);
+
   const { id } = req.params;
   const result = await FacultyServices.getSingleFacultyFromDB(id);
 
